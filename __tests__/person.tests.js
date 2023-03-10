@@ -15,3 +15,8 @@ test('should create a Person object with the correct properties', () => {
   expect(person.age).toBe(30);
   expect(person.gender).toBe('male');
 });
+
+test('should return the person name', () => {
+  const person = new Person('John', 'Doe', 30);
+  expect(person.getName()).toBe('John Doe');
+});
