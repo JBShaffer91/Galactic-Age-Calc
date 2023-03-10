@@ -13,6 +13,11 @@ class Person {
     getAge() {
     return this.age;
   }
+
+  setName(firstName, lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
 }
 
 module.exports = Person;
