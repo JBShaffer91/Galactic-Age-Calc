@@ -9,6 +9,10 @@ class Person {
   getName() {
     return `${this.firstName} ${this.lastName}`;
   }
+
+    getAge() {
+    return this.age;
+  }
 }
 
 module.exports = Person;

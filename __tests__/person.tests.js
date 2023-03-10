@@ -20,3 +20,8 @@ test('should return the person name', () => {
   const person = new Person('John', 'Doe', 30);
   expect(person.getName()).toBe('John Doe');
 });
+
+test('should return the person age', () => {
+  const person = new Person('Alice', '', 30, '');
+  expect(person.getAge()).toBe(30);
+});
