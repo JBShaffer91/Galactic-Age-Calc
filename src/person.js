@@ -18,6 +18,10 @@ class Person {
     this.firstName = firstName;
     this.lastName = lastName;
   }
+
+  setAge(newAge) {
+    this.age = newAge;
+  }  
 }
 
 module.exports = Person;

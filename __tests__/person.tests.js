@@ -35,3 +35,10 @@ test('should set the person name', () => {
   expect(person.lastName).toBe('Doe');
   expect(person.getName()).toBe('Jane Doe');
 });
+
+test('should set the person age', () => {
+  const person = new Person('Alice', 'Smith', 25, 'female');
+  expect(person.getAge()).toBe(25);
+  person.setAge(30);
+  expect(person.getAge()).toBe(30);
+});
