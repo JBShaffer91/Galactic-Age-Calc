@@ -52,3 +52,9 @@ test('should return age in Mars years', () => {
   expect(person.getMarsAge()).toBe(12);
 });
 
+test('should return age in Jupiter years', () => {
+  const person = new Person('Jane', 'Doe', 30, 'female');
+  const jupiterAge = Math.floor(person.age / 11.86);
+  expect(person.getJupiterAge()).toEqual(jupiterAge);
+});
+
