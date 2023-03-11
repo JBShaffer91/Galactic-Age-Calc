@@ -31,6 +31,11 @@ class Person {
   getVenusAge() {
     return this.age / 0.62;
   }
+
+  getMarsAge() {
+    const marsYear = 1.88;
+    return Math.floor(this.age / marsYear);
+  }
 }
 
 module.exports = Person;

@@ -46,3 +46,9 @@ test('should return age in Venus years', () => {
   const venusAge = earthAge / 0.62;
   expect(person.getVenusAge()).toBeCloseTo(venusAge, 2);
 });
+
+test('should return age in Mars years', () => {
+  const person = new Person('John', 'Doe', 24, 'male');
+  expect(person.getMarsAge()).toBe(12);
+});
+
