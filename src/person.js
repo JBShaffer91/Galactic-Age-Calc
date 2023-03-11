@@ -22,6 +22,15 @@ class Person {
   setAge(newAge) {
     this.age = newAge;
   }  
+
+  getMercuryAge() {
+    const mercuryYear = 0.24;
+    return Math.floor(this.age / mercuryYear);
+  }
+
+  getVenusAge() {
+    return this.age / 0.62;
+  }
 }
 
 module.exports = Person;

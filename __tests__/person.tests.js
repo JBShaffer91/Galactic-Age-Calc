@@ -1,12 +1,4 @@
-const Person = require('../src/person.js');
-
-test('should fail', () => {
-  expect(true).toBe(false);
-});
-
-test('should pass', () => {
-  expect(true).toBe(true);
-});
+const Person = require('../src/person');
 
 test('should create a Person object with the correct properties', () => {
   const person = new Person('John', 'Doe', 30, 'male');
@@ -41,4 +33,16 @@ test('should set the person age', () => {
   expect(person.getAge()).toBe(25);
   person.setAge(30);
   expect(person.getAge()).toBe(30);
+});
+
+test('should return age in Mercury years', () => {
+  const person = new Person('John', 'Doe', 24, 'male');
+  expect(person.getMercuryAge()).toBeCloseTo(100, 0);
+});
+
+test('should return age in Venus years', () => {
+  const person = new Person('John', 'Doe', 24, 'male');
+  const earthAge = 24;
+  const venusAge = earthAge / 0.62;
+  expect(person.getVenusAge()).toBeCloseTo(venusAge, 2);
 });
