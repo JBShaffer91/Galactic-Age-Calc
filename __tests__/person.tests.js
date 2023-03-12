@@ -1,60 +1,89 @@
 const Person = require('../src/person');
 
-test('should create a Person object with the correct properties', () => {
-  const person = new Person('John', 'Doe', 30, 'male');
-  expect(person.firstName).toBe('John');
-  expect(person.lastName).toBe('Doe');
-  expect(person.age).toBe(30);
-  expect(person.gender).toBe('male');
-});
+describe('Person', () => {
+  let person;
 
-test('should return the person name', () => {
-  const person = new Person('John', 'Doe', 30);
-  expect(person.getName()).toBe('John Doe');
-});
+  beforeEach(() => {
+    person = new Person('John', 'Doe', 30, 'male');
+  });
 
-test('should return the person age', () => {
-  const person = new Person('Alice', '', 30, '');
-  expect(person.getAge()).toBe(30);
-});
+  describe('getName', () => {
+    it('returns the full name', () => {
+      expect(person.getName()).toEqual('John Doe');
+    });
+  });
 
-test('should set the person name', () => {
-  const person = new Person('John', 'Doe', 30);
-  expect(person.getName()).toBe('John Doe');
+  describe('getAge', () => {
+    it('returns the age', () => {
+      expect(person.getAge()).toEqual(30);
+    });
+  });
 
-  person.setName('Jane', 'Doe');
-  expect(person.firstName).toBe('Jane');
-  expect(person.lastName).toBe('Doe');
-  expect(person.getName()).toBe('Jane Doe');
-});
+  describe('setName', () => {
+    it('sets the first and last name', () => {
+      person.setName('Jane', 'Smith');
+      expect(person.getName()).toEqual('Jane Smith');
+    });
+  });
 
-test('should set the person age', () => {
-  const person = new Person('Alice', 'Smith', 25, 'female');
-  expect(person.getAge()).toBe(25);
-  person.setAge(30);
-  expect(person.getAge()).toBe(30);
-});
+  describe('setAge', () => {
+    it('sets the age', () => {
+      person.setAge(40);
+      expect(person.getAge()).toEqual(40);
+    });
+  });
 
-test('should return age in Mercury years', () => {
-  const person = new Person('John', 'Doe', 24, 'male');
-  expect(person.getMercuryAge()).toBeCloseTo(100, 0);
-});
+  describe('getEarthAge', () => {
+    it('returns the age in earth years', () => {
+      const person = new Person('John', 'Doe', null, 'male', '1992-03-12');
+      expect(person.getEarthAge()).toEqual(31);
+    });
+  });
+  
 
-test('should return age in Venus years', () => {
-  const person = new Person('John', 'Doe', 24, 'male');
-  const earthAge = 24;
-  const venusAge = earthAge / 0.62;
-  expect(person.getVenusAge()).toBeCloseTo(venusAge, 2);
-});
+  describe('getMercuryAge', () => {
+    it('returns the age in mercury years', () => {
+      expect(person.getMercuryAge()).toEqual(125);
+    });
+  });
 
-test('should return age in Mars years', () => {
-  const person = new Person('John', 'Doe', 24, 'male');
-  expect(person.getMarsAge()).toBe(12);
-});
+  describe('getVenusAge', () => {
+    it('returns the age in venus years', () => {
+      expect(person.getVenusAge()).toEqual(48);
+    });
+  });
 
-test('should return age in Jupiter years', () => {
-  const person = new Person('Jane', 'Doe', 30, 'female');
-  const jupiterAge = Math.floor(person.age / 11.86);
-  expect(person.getJupiterAge()).toEqual(jupiterAge);
-});
+  describe('getMarsAge', () => {
+    it('returns the age in mars years', () => {
+      expect(person.getMarsAge()).toEqual(15);
+    });
+  });
 
+  describe('getJupiterAge', () => {
+    it('returns the age in jupiter years', () => {
+      expect(person.getJupiterAge()).toEqual(2);
+    });
+  });
+
+  describe('getYearsSinceBirthday', () => {
+    it('returns the correct number of years since the given birthday', () => {
+      const result = person.getYearsSinceBirthday('1990-01-01');
+      expect(result.earthYears).toBeCloseTo(30);
+      expect(result.mercuryYears).toBeCloseTo(125);
+      expect(result.venusYears).toBeCloseTo(48.387);
+      expect(result.marsYears).toBeCloseTo(15.957);
+      expect(result.jupiterYears).toBeCloseTo(2.528);
+    });
+  });
+  
+  describe('getYearsUntilBirthday', () => {
+    it('returns the correct number of years until the given birthday', () => {
+      const result = person.getYearsUntilBirthday('1990-01-01');
+      expect(result.earthYears).toBeCloseTo(5.25);
+      expect(result.mercuryYears).toBeCloseTo(21.875);
+      expect(result.venusYears).toBeCloseTo(8.4677);
+      expect(result.marsYears).toBeCloseTo(2.8085);
+      expect(result.jupiterYears).toBeCloseTo(0.4465);
+    });
+  });
+});  
