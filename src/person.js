@@ -4,7 +4,7 @@ class Person {
     this.lastName = lastName;
     this.age = age;
     this.gender = gender;
-    this.birthday = birthday;
+    this.birthday = new Date(birthday);
   }
 
   getName() {
@@ -32,53 +32,67 @@ class Person {
 
   getMercuryAge() {
     const mercuryYear = 0.24;
-    return Math.floor(this.age / mercuryYear);
+    return Math.floor(this.getEarthAge() / mercuryYear);
   }
 
   getVenusAge() {
     const venusYear = 0.62;
-    return Math.floor(this.age / venusYear);
+    return Math.floor(this.getEarthAge() / venusYear);
   }
 
   getMarsAge() {
     const marsYear = 1.88;
-    return Math.floor(this.age / marsYear);
-  }
+    return Math.floor(this.getEarthAge() / marsYear);
+  }  
 
   getJupiterAge() {
     const jupiterYear = 11.86;
-    return Math.floor(this.age / jupiterYear);
+    return Math.floor(this.getEarthAge() / jupiterYear);
   }
+
+  getAgeInfo() {
+    const birthDate = this.birthday;
+    const ageInMs = Date.now() - birthDate.getTime();
+    const ageInYears = ageInMs / (1000 * 60 * 60 * 24 * 365.25);
+    return Math.round(ageInYears);
+  }  
 
   getYearsSinceBirthday() {
-    const earthYear = 365.25;
-    const ageInDays = (new Date() - new Date(this.birthday)) / (24 * 60 * 60 * 1000);
-    const ageInYears = ageInDays / earthYear;
+    const now = new Date();
+    const diff = now.getTime() - this.birthday.getTime(); // get time in milliseconds
+    const earthYears = Math.floor(diff / 31557600000);
+    const mercuryYears = earthYears / 0.2408467;
+    const venusYears = earthYears / 0.61519726;
+    const marsYears = earthYears / 1.8808158;
+    const jupiterYears = earthYears / 11.862615;
     return {
-      earthYears: this.age - ageInYears,
-      mercuryYears: (this.age / 0.24) - (ageInYears / 0.24),
-      venusYears: (this.age / 0.62) - (ageInYears / 0.62),
-      marsYears: (this.age / 1.88) - (ageInYears / 1.88),
-      jupiterYears: (this.age / 11.86) - (ageInYears / 11.86),
+      earthYears: earthYears,
+      mercuryYears: mercuryYears,
+      venusYears: venusYears,
+      marsYears: marsYears,
+      jupiterYears: jupiterYears,
     };
   }
-
+  
   getYearsUntilBirthday() {
-    const earthYear = 365.25;
-    const today = new Date();
-    const birthDate = new Date(this.birthday);
-    birthDate.setFullYear(today.getFullYear());
-    if (birthDate.getTime() < today.getTime()) {
-      birthDate.setFullYear(today.getFullYear() + 1);
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const nextBirthday = new Date(currentYear, this.birthday.getMonth(), this.birthday.getDate());
+    if (nextBirthday < now) {
+      nextBirthday.setFullYear(currentYear + 1);
     }
-    const ageInDays = (birthDate - today) / (24 * 60 * 60 * 1000);
-    const ageInYears = ageInDays / earthYear;
+    const diff = nextBirthday - now;
+    const earthYears = Math.floor(diff / 31557600000);
+    const mercuryYears = earthYears / 0.2408467;
+    const venusYears = earthYears / 0.61519726;
+    const marsYears = earthYears / 1.8808158;
+    const jupiterYears = earthYears / 11.862615;
     return {
-      earthYears: ageInYears,
-      mercuryYears: ageInYears / 0.24,
-      venusYears: ageInYears / 0.62,
-      marsYears: ageInYears / 1.88,
-      jupiterYears: ageInYears / 11.86,
+      earthYears: earthYears,
+      mercuryYears: mercuryYears,
+      venusYears: venusYears,
+      marsYears: marsYears,
+      jupiterYears: jupiterYears,
     };
   }
 }
