@@ -120,5 +120,19 @@ describe('Person', () => {
       expect(typeof yearsOnPlanets.jupiterYears).toBe('number');
     });
   });
+
+  describe('nextBirthday', () => {
+    it('sets the year to the next year if the next birthday is in the past', () => {
+      const person = new Person('John', 'Doe', 30, 'male', '1990-01-01');
+      person.birthday = new Date('2000-01-01');
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const nextBirthday = new Date(currentYear, person.birthday.getMonth(), person.birthday.getDate());
+      if (nextBirthday < now) {
+        nextBirthday.setFullYear(currentYear + 1);
+      }
+      expect(nextBirthday.getFullYear()).toBe(currentYear + 1);
+    });
+  });
 });  
 
