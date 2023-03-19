@@ -88,51 +88,52 @@ describe('Person', () => {
   });  
   
   describe('getYearsSinceBirthday', () => {
-    it('returns an object with years on different planets as numbers', () => {
-      const person = new Person('John', 'Doe', 30, 'male', '1990-01-01');
-      const yearsOnPlanets = person.getYearsSinceBirthday();
+    it('calculates age on different planets based on a given birthdate', () => {
+      const johnDoe = new Person('John', 'Doe', 33, 'male', '1990-01-01');
+      const yearsOnPlanets = johnDoe.getYearsSinceBirthday();
+  
       expect(yearsOnPlanets).toHaveProperty('earthYears');
+      expect(yearsOnPlanets.earthYears).toEqual(33);
       expect(yearsOnPlanets).toHaveProperty('mercuryYears');
+      expect(yearsOnPlanets.mercuryYears).toEqual(137.01661679400218);
       expect(yearsOnPlanets).toHaveProperty('venusYears');
+      expect(yearsOnPlanets.venusYears).toEqual(53.64133123739855);
       expect(yearsOnPlanets).toHaveProperty('marsYears');
+      expect(yearsOnPlanets.marsYears).toEqual(17.545577828514627);
       expect(yearsOnPlanets).toHaveProperty('jupiterYears');
-      expect(typeof yearsOnPlanets.earthYears).toBe('number');
-      expect(typeof yearsOnPlanets.mercuryYears).toBe('number');
-      expect(typeof yearsOnPlanets.venusYears).toBe('number');
-      expect(typeof yearsOnPlanets.marsYears).toBe('number');
-      expect(typeof yearsOnPlanets.jupiterYears).toBe('number');
+      expect(yearsOnPlanets.jupiterYears).toEqual(2.7818486901918336);
     });
   });
   
-  describe('getYearsUntilBirthday', () => {
-    it('returns an object with years on different planets as numbers', () => {
-      const person = new Person('John', 'Doe', 30, 'male', '1990-01-01');
-      const yearsOnPlanets = person.getYearsUntilBirthday();
-      expect(yearsOnPlanets).toHaveProperty('earthYears');
-      expect(yearsOnPlanets).toHaveProperty('mercuryYears');
-      expect(yearsOnPlanets).toHaveProperty('venusYears');
-      expect(yearsOnPlanets).toHaveProperty('marsYears');
-        expect(yearsOnPlanets).toHaveProperty('jupiterYears');
-      expect(typeof yearsOnPlanets.earthYears).toBe('number');
-      expect(typeof yearsOnPlanets.mercuryYears).toBe('number');
-      expect(typeof yearsOnPlanets.venusYears).toBe('number');
-      expect(typeof yearsOnPlanets.marsYears).toBe('number');
-      expect(typeof yearsOnPlanets.jupiterYears).toBe('number');
-    });
-  });
-
-  describe('nextBirthday', () => {
-    it('sets the year to the next year if the next birthday is in the past', () => {
-      const person = new Person('John', 'Doe', 30, 'male', '1990-01-01');
-      person.birthday = new Date('2000-01-01');
-      const now = new Date();
-      const currentYear = now.getFullYear();
-      const nextBirthday = new Date(currentYear, person.birthday.getMonth(), person.birthday.getDate());
-      if (nextBirthday < now) {
-        nextBirthday.setFullYear(currentYear + 1);
-      }
-      expect(nextBirthday.getFullYear()).toBe(currentYear + 1);
-    });
+  
+  it('calculates years until next birthday on different planets based on a given birthdate', () => {
+    const person = new Person('John', 'Doe', new Date('1985-03-25'));
+  
+    const yearsUntilBirthday = person.getYearsUntilBirthday();
+  
+    expect(yearsUntilBirthday).toHaveProperty('earthYears');
+    expect(yearsUntilBirthday).toHaveProperty('mercuryYears');
+    expect(yearsUntilBirthday).toHaveProperty('venusYears');
+    expect(yearsUntilBirthday).toHaveProperty('marsYears');
+    expect(yearsUntilBirthday).toHaveProperty('jupiterYears');
+  
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const nextBirthday = new Date(currentYear, person.birthday.getMonth(), person.birthday.getDate());
+    if (nextBirthday < now) {
+      nextBirthday.setFullYear(currentYear + 1);
+    }
+    const earthYears = Math.floor((nextBirthday.getTime() - person.birthday.getTime()) / 31557600000);
+    const mercuryYears = earthYears / 0.2408467;
+    const venusYears = earthYears / 0.61519726;
+    const marsYears = earthYears / 1.8808158;
+    const jupiterYears = earthYears / 11.862615;
+  
+    expect(yearsUntilBirthday.earthYears).toEqual(earthYears);
+    expect(yearsUntilBirthday.mercuryYears).toEqual(mercuryYears);
+    expect(yearsUntilBirthday.venusYears).toEqual(venusYears);
+    expect(yearsUntilBirthday.marsYears).toEqual(marsYears);
+    expect(yearsUntilBirthday.jupiterYears).toEqual(jupiterYears);
   });
 });  
 

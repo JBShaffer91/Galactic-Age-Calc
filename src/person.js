@@ -75,26 +75,34 @@ class Person {
   }
   
   getYearsUntilBirthday() {
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const nextBirthday = new Date(currentYear, this.birthday.getMonth(), this.birthday.getDate());
-    if (nextBirthday < now) {
-      nextBirthday.setFullYear(currentYear + 1);
-    }
-    const diff = nextBirthday - now;
-    const earthYears = Math.floor(diff / 31557600000);
-    const mercuryYears = earthYears / 0.2408467;
-    const venusYears = earthYears / 0.61519726;
-    const marsYears = earthYears / 1.8808158;
-    const jupiterYears = earthYears / 11.862615;
+    const yearsUntilBirthday = this.calculateYearsUntilBirthday();
+    const mercuryYears = yearsUntilBirthday / 0.2408467;
+    const venusYears = yearsUntilBirthday / 0.61519726;
+    const marsYears = yearsUntilBirthday / 1.8808158;
+    const jupiterYears = yearsUntilBirthday / 11.862615;
     return {
-      earthYears: earthYears,
+      earthYears: yearsUntilBirthday,
       mercuryYears: mercuryYears,
       venusYears: venusYears,
       marsYears: marsYears,
       jupiterYears: jupiterYears,
     };
-  }
+  };
+  
+  calculateYearsUntilBirthday() {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const birthMonth = this.birthday.getMonth();
+    const birthDate = this.birthday.getDate();
+    const nextBirthday = new Date(currentYear, birthMonth, birthDate);
+    if (nextBirthday < now) {
+      nextBirthday.setFullYear(currentYear + 1);
+    }
+    const timeUntilBirthday = nextBirthday.getTime() - now.getTime();
+    const msPerYear = 31557600000;
+    const yearsUntilBirthday = Math.floor(timeUntilBirthday / msPerYear);
+    return yearsUntilBirthday;
+  }; 
 }
 
 module.exports = Person;
