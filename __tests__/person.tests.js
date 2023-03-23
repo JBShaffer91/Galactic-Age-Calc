@@ -106,34 +106,50 @@ describe('Person', () => {
   });
   
   
-  it('calculates years until next birthday on different planets based on a given birthdate', () => {
-    const person = new Person('John', 'Doe', new Date('1985-03-25'));
-  
-    const yearsUntilBirthday = person.getYearsUntilBirthday();
-  
-    expect(yearsUntilBirthday).toHaveProperty('earthYears');
-    expect(yearsUntilBirthday).toHaveProperty('mercuryYears');
-    expect(yearsUntilBirthday).toHaveProperty('venusYears');
-    expect(yearsUntilBirthday).toHaveProperty('marsYears');
-    expect(yearsUntilBirthday).toHaveProperty('jupiterYears');
-  
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const nextBirthday = new Date(currentYear, person.birthday.getMonth(), person.birthday.getDate());
-    if (nextBirthday < now) {
-      nextBirthday.setFullYear(currentYear + 1);
-    }
-    const earthYears = Math.floor((nextBirthday.getTime() - person.birthday.getTime()) / 31557600000);
-    const mercuryYears = earthYears / 0.2408467;
-    const venusYears = earthYears / 0.61519726;
-    const marsYears = earthYears / 1.8808158;
-    const jupiterYears = earthYears / 11.862615;
-  
-    expect(yearsUntilBirthday.earthYears).toEqual(earthYears);
-    expect(yearsUntilBirthday.mercuryYears).toEqual(mercuryYears);
-    expect(yearsUntilBirthday.venusYears).toEqual(venusYears);
-    expect(yearsUntilBirthday.marsYears).toEqual(marsYears);
-    expect(yearsUntilBirthday.jupiterYears).toEqual(jupiterYears);
-  });
-});  
+  describe("getYearsUntilBirthday", () => {
+    it("calculates years until next birthday on different planets based on a given birthdate", () => {
+      const person = new Person("John", "Doe", new Date("1985-03-25"));
+      const returnValue = person.getYearsUntilBirthday();
 
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const birthMonth = person.birthday.getMonth();
+      const birthDate = person.birthday.getDate();
+      const nextBirthday = new Date(currentYear, birthMonth, birthDate);
+      if (nextBirthday < now) {
+        nextBirthday.setFullYear(currentYear + 1);
+      }
+      const msUntilBirthday = nextBirthday.getTime() - now.getTime();
+      const msPerYear = 31557600000;
+      const yearsUntilBirthday = msUntilBirthday / msPerYear;
+      const mercuryYears = yearsUntilBirthday / 0.2408467;
+      const venusYears = yearsUntilBirthday / 0.61519726;
+      const marsYears = yearsUntilBirthday / 1.8808158;
+      const jupiterYears = yearsUntilBirthday / 11.862615;
+
+      expect(returnValue).toEqual({
+        earthYears: yearsUntilBirthday,
+        jupiterYears: jupiterYears,
+        marsYears: marsYears,
+        mercuryYears: mercuryYears,
+        venusYears: venusYears,
+      });
+    });
+
+    it("calculateBranch", () => {
+      const person = new Person("John", "Doe", new Date("1985-03-25"));
+      const person2 = new Person("John", "Doe", new Date("1985-05-25"));
+
+      const birthday = new Date(2023, 1, 25);
+
+      const expectedValue = person.calculateBranch(birthday);
+
+      const birthday2 = new Date(2023, 6, 25);
+
+      const expectedValue2 = person2.calculateBranch(birthday2);
+
+      expect(expectedValue).toEqual(1708848000000);
+      expect(expectedValue2).toEqual(2);
+    });
+  });
+})
